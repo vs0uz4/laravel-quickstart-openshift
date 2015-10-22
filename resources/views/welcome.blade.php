@@ -38,7 +38,8 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Laravel 5</div>
+                <div class="title">Laravel 5.1</div>
+                <div class="quote">Quickstart for Openshift</div>
             </div>
         </div>
     </body>
