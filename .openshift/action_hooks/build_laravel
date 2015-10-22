@@ -13,8 +13,8 @@ function check_laravel() {
     else
             echo 'Hang in there, we are getting ready to Install/Update dependencies'
             echo 'Installing/Updating dependencies'; 
-            unset GIT_DIR ; 
-            cd $OPENSHIFT_REPO_DIR ; 
-            php $OPENSHIFT_PHP_DIR/composer/bin/composer -q --no-ansi install ;
+            unset GIT_DIR; 
+            cd $OPENSHIFT_REPO_DIR; 
+            php $OPENSHIFT_PHP_DIR/composer/bin/composer -q --no-ansi install;
     fi
 }
