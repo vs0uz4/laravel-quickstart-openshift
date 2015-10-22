@@ -1,3 +1,4 @@
+
 # Enable Gzip
 gzip  on;
 gzip_http_version 1.0;
@@ -6,7 +7,6 @@ gzip_min_length 1100;
 gzip_buffers     4 8k;
 gzip_proxied any;
 gzip_types
-  # text/html is always compressed by HttpGzipModule
   text/css
   text/javascript
   text/xml
@@ -27,14 +27,48 @@ gzip_disable        "MSIE [1-6]\.";
 gzip_vary           on;
 
 server {
-    listen  <%= ENV['OPENSHIFT_NGINX_IP'] %>:<%= ENV['OPENSHIFT_NGINX_PORT'] %>;
-    root    <%= ENV['OPENSHIFT_REPO_DIR'] %>/public;
+    server_name  localhost;
+    listen ${OPENSHIFT_DIY_IP}:${OPENSHIFT_DIY_PORT};
+    root   ${OPENSHIFT_REPO_DIR}/public;
 
-    # pass the PHP scripts to PHP-FPM
+    add_header Strict-Transport-Security max-age=691200;
+
+    location / {
+        index  index.html  index.htm  index.php ;
+
+        try_files $uri $uri/ @rewrites;
+    }
+
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    location ~ /\.          { access_log off; log_not_found off; deny all; }
+    location ~ ~$           { access_log off; log_not_found off; deny all; }
+
+    # Set expires max on static file types
+    location ~* ^.+\.(css|js|jpg|jpeg|gif|png|ico|gz|svg|svgz|ttf|otf|woff|eot|mp4|ogg|ogv|webm)$ {
+        access_log off;
+        log_not_found off;
+
+        # Some basic cache-control for static files to be sent to the browser
+        expires max;
+        add_header Pragma public;
+        add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+    }
+
+    location @rewrites {
+        rewrite ^(.*)$ /index.php/$1 last;
+    }
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
     location ~ ^/index\.php(/|$) {
-        fastcgi_pass unix:<%= ENV['OPENSHIFT_PHP_SOCKET'] %>;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_pass unix:${OPENSHIFT_RUN_DIR}/php-fpm.socket;
+
+        fastcgi_param SCRIPT_FILENAME    $document_root$fastcgi_script_name;
         fastcgi_param PATH_INFO $fastcgi_script_name;
-        include <%= ENV['OPENSHIFT_NGINX_DIR'] %>/usr/nginx-<%= ENV['OPENSHIFT_NGINX_VERSION'] %>/conf/fastcgi_params;
+
+        include fastcgi_params;
     }
 }
+
+# opt-in to the future
+add_header "X-UA-Compatible" "IE=Edge,chrome=1";
