@@ -17,9 +17,7 @@ source $OPENSHIFT_CARTRIDGE_SDK_BASH
 
 set -e
 
-echo 1>&2
-echo "Setting environment variables..." 1>&2
-
+echo "Setting environment variables..."
 export APP_ENV="${APPLICATION_ENV:-production}"
 if [[ "${APPLICATION_ENV:-}" != "development" ]]; then
   export APP_DEBUG=false
@@ -54,18 +52,14 @@ if [ ! -z "$OPENSHIFT_MYSQL_DB_HOST" ]; then
 fi
 
 if [ -z "$DB_CONNECTION" ]; then
-  echo 1>&2
-  echo "Could not find the database cartridge.  Please run:" 1>&2
-  echo "rhc cartridge add -a $OPENSHIFT_APP_NAME -c mysql-5.5" 1>&2
+  echo "Could not find the database cartridge.  Please run:"
+  echo "rhc cartridge add -a $OPENSHIFT_APP_NAME -c mysql-5.5"
   echo "or"
-  echo "rhc cartridge add -a $OPENSHIFT_APP_NAME -c postgresql-9.2" 1>&2
-  echo "then make a sample commit (add whitespace somewhere) and re-push" 1>&2
-  echo 1>&2
+  echo "rhc cartridge add -a $OPENSHIFT_APP_NAME -c postgresql-9.2"
+  echo "then make a sample commit (add whitespace somewhere) and re-push"
   exit 5
 else
-  echo 1>&2
-  echo "Database driver set to '$DB_CONNECTION'..." 1>&2
-  echo 1>&2
+  echo "Database driver set to '$DB_CONNECTION'..."
   if [ "$(type -t set_env_var)" == "function" ]; then
     set_env_var 'DB_CONNECTION' $DB_CONNECTION $OPENSHIFT_HOMEDIR/.env/user_vars
   fi
