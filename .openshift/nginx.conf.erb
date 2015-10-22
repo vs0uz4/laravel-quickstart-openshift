@@ -28,8 +28,8 @@ gzip_vary           on;
 
 server {
     server_name  localhost;
-    listen ${OPENSHIFT_DIY_IP}:${OPENSHIFT_DIY_PORT};
-    root   ${OPENSHIFT_REPO_DIR}/public;
+    listen  <%= ENV['OPENSHIFT_NGINX_IP'] %>:<%= ENV['OPENSHIFT_NGINX_PORT'] %>;
+    root    <%= ENV['OPENSHIFT_REPO_DIR'] %>/public;
 
     add_header Strict-Transport-Security max-age=691200;
 
@@ -59,14 +59,12 @@ server {
         rewrite ^(.*)$ /index.php/$1 last;
     }
 
-    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    # pass the PHP scripts to PHP-FPM
     location ~ ^/index\.php(/|$) {
-        fastcgi_pass unix:${OPENSHIFT_RUN_DIR}/php-fpm.socket;
-
-        fastcgi_param SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+        fastcgi_pass unix:<%= ENV['OPENSHIFT_PHP_SOCKET'] %>;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param PATH_INFO $fastcgi_script_name;
-
-        include fastcgi_params;
+        include <%= ENV['OPENSHIFT_NGINX_DIR'] %>/usr/nginx-<%= ENV['OPENSHIFT_NGINX_VERSION'] %>/conf/fastcgi_params;
     }
 }
 
