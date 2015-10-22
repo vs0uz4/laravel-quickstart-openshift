@@ -58,8 +58,10 @@ fi
 
 # Use repository .env
 if [ -f ${OPENSHIFT_REPO_DIR}/.openshift/.env ]; then
-    echo "Creating enviroments settings..."
+    echo "Creating enviroments settings file '.env' ..."
     cp -f ${OPENSHIFT_REPO_DIR}/.openshift/.env ${OPENSHIFT_REPO_DIR}/.env
+else
+    echo "Enviroments settings file '.env' not found ..."
 fi
 
 echo "Running 'php artisan migrate --force'..."
