@@ -57,9 +57,9 @@ else
 fi
 
 # Use repository .env
-if [ -f ${OPENSHIFT_REPO_DIR}/.openshift/.env ]; then
+if [ -f ${OPENSHIFT_REPO_DIR}/.openshift/tmpl/.env.tmpl ]; then
     echo "Creating enviroments settings file '.env' ..."
-    cp -f ${OPENSHIFT_REPO_DIR}/.openshift/.env ${OPENSHIFT_REPO_DIR}/.env
+    cp -f ${OPENSHIFT_REPO_DIR}/.openshift/tmpl/.env.tmpl ${OPENSHIFT_REPO_DIR}/.env
 else
     echo "Enviroments settings file '.env' not found ..."
 fi
