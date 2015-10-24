@@ -60,8 +60,8 @@ server {
 
     # pass the PHP scripts to PHP-FPM
     # for only index.php requests, change next line 'location' for commented line below
-    location ~ ^/index\.php(/|$) {
-    #location ~ \.php$ {
+    #location ~ ^/index\.php(/|$) {
+    location ~ \.php$ {
         fastcgi_pass unix:<%= ENV['OPENSHIFT_PHP_SOCKET'] %>;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param PATH_INFO $fastcgi_script_name;
