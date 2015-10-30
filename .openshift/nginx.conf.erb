@@ -35,7 +35,7 @@ server {
     location / {
         index  index.html  index.htm  index.php ;
 
-        try_files $uri $uri/ @rewrites;
+        try_files $uri $uri/ /index.php?$query_string;
     }
 
     location = /robots.txt  { access_log off; log_not_found off; }
