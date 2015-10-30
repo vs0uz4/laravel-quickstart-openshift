@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/api', function () {
-    return 'API pronta para receber chamadas';
+Route::get('/system-info', function () {
+    return view('infos.system');
+});
+
+Route::get('/opcache-info', function () {
+    return view('infos.opcache');
 });
