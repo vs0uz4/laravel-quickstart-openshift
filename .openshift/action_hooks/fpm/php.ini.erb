@@ -884,6 +884,7 @@ default_socket_timeout = 60
 ;extension=php_pgsql.dll
 ;extension=php_pspell.dll
 ;extension=php_shmop.dll
+extension=opcache.so
 
 ; The MIBS data available in the PHP distribution must be installed. 
 ; See http://www.php.net/manual/en/snmp.installation.php 
@@ -1836,7 +1837,7 @@ ldap.max_links = -1
 opcache.enable=1
 
 ; Determines if Zend OPCache is enabled for the CLI version of PHP
-opcache.enable_cli=1
+;opcache.enable_cli=0
 
 ; The OPcache shared memory storage size.
 ;opcache.memory_consumption=64
